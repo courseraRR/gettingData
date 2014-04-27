@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Code Book</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Code Book</h1>
+
+<h2>Summary</h2>
+
+<h3>Orginal Source of Data</h3>
+
+<p>The original data for this exercise was obtained from 
+&ldquo;<a href="https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip">https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip</a>&rdquo;</p>
+
+<h3>Assumptions about the original data</h3>
+
+<p>*Each line in the X_test.txt file  corresponst to the result in y_test.txt and form s a single record
+*Each column in the X_test.txt file  corresponds to a feature in the row in the featurs.txt file
+*Each number in the y_test.txt file corresponds to a activity in the activity_labels file, where the first column of the activities file is the key, and the y value corresponding to that key has the activity label given by the second column of the activites file.
+*All that was assumed about the testing data also holds for the training data</p>
+
+<h3>Summary of R script</h3>
+
+<p>The script will will first check to see if the data is already availabe by checking the
+existance of the &ldquo;./UCI HAR Dataset/&rdquo; directory, and if not found will attempt download and
+unzip the required data. </p>
+
+<p>This script producs two data sets which are automatically saved to 
+&ldquo;combinedData.csv&rdquo; and &ldquo;df_tidy.csv&rdquo;.</p>
+
+<h2>CombinedData.csv</h2>
+
+<p>A csv file consisting of subject id, activity and a collection of derived measurments obtained from the train and test data sets of the original data by extracting those measurement that contain either &ldquo;std()&rdquo; or a &ldquo;mean()&rdquo; in their names.</p>
+
+<h3>Variables</h3>
+
+<ul>
+<li><strong>subject</strong> the subject id (numbers from 1-30) of individuals within the experiment. These
+are extracted from the data files &ldquo;subject_test.txt&rdquo;&ldquo; and &quot;object_train.txt&rdquo;&ldquo; </li>
+<li><strong>activity</strong> A factor representing the activity. The labels are obtained from the file
+&quot;activity_labels.txt&rdquo;. The activties correspond to those specified in the corresponding 
+files &ldquo;y_test.txt&rdquo; and &ldquo;u_\train.txt&rdquo;, using the numeric to label codes containded in 
+&ldquo;activity_labels.txt&rdquo;.</li>
+<li><strong>tBodyAcc_mean_X</strong>  corresponds to the variable &#39;tBodyAcc-mean()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 1 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAcc_mean_Y</strong>  corresponds to the variable &#39;tBodyAcc-mean()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 2 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAcc_mean_Z</strong>  corresponds to the variable &#39;tBodyAcc-mean()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 3 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAcc_std_X</strong>  corresponds to the variable &#39;tBodyAcc-std()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 4 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAcc_std_Y</strong>  corresponds to the variable &#39;tBodyAcc-std()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 5 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAcc_std_Z</strong>  corresponds to the variable &#39;tBodyAcc-std()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 6 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tGravityAcc_mean_X</strong>  corresponds to the variable &#39;tGravityAcc-mean()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 41 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tGravityAcc_mean_Y</strong>  corresponds to the variable &#39;tGravityAcc-mean()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 42 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tGravityAcc_mean_Z</strong>  corresponds to the variable &#39;tGravityAcc-mean()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 43 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tGravityAcc_std_X</strong>  corresponds to the variable &#39;tGravityAcc-std()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 44 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tGravityAcc_std_Y</strong>  corresponds to the variable &#39;tGravityAcc-std()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 45 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tGravityAcc_std_Z</strong>  corresponds to the variable &#39;tGravityAcc-std()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 46 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAccJerk_mean_X</strong>  corresponds to the variable &#39;tBodyAccJerk-mean()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 81 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAccJerk_mean_Y</strong>  corresponds to the variable &#39;tBodyAccJerk-mean()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 82 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAccJerk_mean_Z</strong>  corresponds to the variable &#39;tBodyAccJerk-mean()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 83 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAccJerk_std_X</strong>  corresponds to the variable &#39;tBodyAccJerk-std()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 84 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAccJerk_std_Y</strong>  corresponds to the variable &#39;tBodyAccJerk-std()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 85 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAccJerk_std_Z</strong>  corresponds to the variable &#39;tBodyAccJerk-std()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 86 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyro_mean_X</strong>  corresponds to the variable &#39;tBodyGyro-mean()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 121 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyro_mean_Y</strong>  corresponds to the variable &#39;tBodyGyro-mean()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 122 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyro_mean_Z</strong>  corresponds to the variable &#39;tBodyGyro-mean()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 123 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyro_std_X</strong>  corresponds to the variable &#39;tBodyGyro-std()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 124 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyro_std_Y</strong>  corresponds to the variable &#39;tBodyGyro-std()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 125 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyro_std_Z</strong>  corresponds to the variable &#39;tBodyGyro-std()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 126 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyroJerk_mean_X</strong>  corresponds to the variable &#39;tBodyGyroJerk-mean()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 161 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyroJerk_mean_Y</strong>  corresponds to the variable &#39;tBodyGyroJerk-mean()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 162 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyroJerk_mean_Z</strong>  corresponds to the variable &#39;tBodyGyroJerk-mean()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 163 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyroJerk_std_X</strong>  corresponds to the variable &#39;tBodyGyroJerk-std()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 164 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyroJerk_std_Y</strong>  corresponds to the variable &#39;tBodyGyroJerk-std()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 165 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyroJerk_std_Z</strong>  corresponds to the variable &#39;tBodyGyroJerk-std()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 166 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAccMag_mean</strong>  corresponds to the variable &#39;tBodyAccMag-mean()&#39; from the &#39;features.txt&#39; file and corresponds to the 201 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAccMag_std</strong>  corresponds to the variable &#39;tBodyAccMag-std()&#39; from the &#39;features.txt&#39; file and corresponds to the 202 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tGravityAccMag_mean</strong>  corresponds to the variable &#39;tGravityAccMag-mean()&#39; from the &#39;features.txt&#39; file and corresponds to the 214 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tGravityAccMag_std</strong>  corresponds to the variable &#39;tGravityAccMag-std()&#39; from the &#39;features.txt&#39; file and corresponds to the 215 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAccJerkMag_mean</strong>  corresponds to the variable &#39;tBodyAccJerkMag-mean()&#39; from the &#39;features.txt&#39; file and corresponds to the 227 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyAccJerkMag_std</strong>  corresponds to the variable &#39;tBodyAccJerkMag-std()&#39; from the &#39;features.txt&#39; file and corresponds to the 228 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyroMag_mean</strong>  corresponds to the variable &#39;tBodyGyroMag-mean()&#39; from the &#39;features.txt&#39; file and corresponds to the 240 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyroMag_std</strong>  corresponds to the variable &#39;tBodyGyroMag-std()&#39; from the &#39;features.txt&#39; file and corresponds to the 241 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyroJerkMag_mean</strong>  corresponds to the variable &#39;tBodyGyroJerkMag-mean()&#39; from the &#39;features.txt&#39; file and corresponds to the 253 column of the x_test.txt/X_train.txt files </li>
+<li><strong>tBodyGyroJerkMag_std</strong>  corresponds to the variable &#39;tBodyGyroJerkMag-std()&#39; from the &#39;features.txt&#39; file and corresponds to the 254 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAcc_mean_X</strong>  corresponds to the variable &#39;fBodyAcc-mean()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 266 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAcc_mean_Y</strong>  corresponds to the variable &#39;fBodyAcc-mean()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 267 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAcc_mean_Z</strong>  corresponds to the variable &#39;fBodyAcc-mean()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 268 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAcc_std_X</strong>  corresponds to the variable &#39;fBodyAcc-std()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 269 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAcc_std_Y</strong>  corresponds to the variable &#39;fBodyAcc-std()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 270 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAcc_std_Z</strong>  corresponds to the variable &#39;fBodyAcc-std()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 271 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAccJerk_mean_X</strong>  corresponds to the variable &#39;fBodyAccJerk-mean()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 345 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAccJerk_mean_Y</strong>  corresponds to the variable &#39;fBodyAccJerk-mean()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 346 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAccJerk_mean_Z</strong>  corresponds to the variable &#39;fBodyAccJerk-mean()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 347 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAccJerk_std_X</strong>  corresponds to the variable &#39;fBodyAccJerk-std()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 348 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAccJerk_std_Y</strong>  corresponds to the variable &#39;fBodyAccJerk-std()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 349 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAccJerk_std_Z</strong>  corresponds to the variable &#39;fBodyAccJerk-std()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 350 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyGyro_mean_X</strong>  corresponds to the variable &#39;fBodyGyro-mean()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 424 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyGyro_mean_Y</strong>  corresponds to the variable &#39;fBodyGyro-mean()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 425 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyGyro_mean_Z</strong>  corresponds to the variable &#39;fBodyGyro-mean()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 426 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyGyro_std_X</strong>  corresponds to the variable &#39;fBodyGyro-std()-X&#39; from the &#39;features.txt&#39; file and corresponds to the 427 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyGyro_std_Y</strong>  corresponds to the variable &#39;fBodyGyro-std()-Y&#39; from the &#39;features.txt&#39; file and corresponds to the 428 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyGyro_std_Z</strong>  corresponds to the variable &#39;fBodyGyro-std()-Z&#39; from the &#39;features.txt&#39; file and corresponds to the 429 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAccMag_mean</strong>  corresponds to the variable &#39;fBodyAccMag-mean()&#39; from the &#39;features.txt&#39; file and corresponds to the 503 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyAccMag_std</strong>  corresponds to the variable &#39;fBodyAccMag-std()&#39; from the &#39;features.txt&#39; file and corresponds to the 504 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyBodyAccJerkMag_mean</strong>  corresponds to the variable &#39;fBodyBodyAccJerkMag-mean()&#39; from the &#39;features.txt&#39; file and corresponds to the 516 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyBodyAccJerkMag_std</strong>  corresponds to the variable &#39;fBodyBodyAccJerkMag-std()&#39; from the &#39;features.txt&#39; file and corresponds to the 517 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyBodyGyroMag_mean</strong>  corresponds to the variable &#39;fBodyBodyGyroMag-mean()&#39; from the &#39;features.txt&#39; file and corresponds to the 529 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyBodyGyroMag_std</strong>  corresponds to the variable &#39;fBodyBodyGyroMag-std()&#39; from the &#39;features.txt&#39; file and corresponds to the 530 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyBodyGyroJerkMag_mean</strong>  corresponds to the variable &#39;fBodyBodyGyroJerkMag-mean()&#39; from the &#39;features.txt&#39; file and corresponds to the 542 column of the x_test.txt/X_train.txt files </li>
+<li><strong>fBodyBodyGyroJerkMag_std</strong>  corresponds to the variable &#39;fBodyBodyGyroJerkMag-std()&#39; from the &#39;features.txt&#39; file and corresponds to the 543 column of the x_test.txt/X_train.txt files </li>
+</ul>
+
+<h2>Data Transformation</h2>
+
+<p>Data was extracted, mapped, merged, and tranformed to get CombinedData.csv. </p>
+
+<ul>
+<li>Transformation consisted of mapping y to the corrseponding factor representing the activity, </li>
+<li>mapping the features.txt row column names of the X tables, </li>
+<li>tranforming the feature names by replacing - with _ and removing ()</li>
+</ul>
+
+<h2>df_tidy.csv</h2>
+
+<p>Is a csv file with four variables</p>
+
+<p>Variables:</p>
+
+<ul>
+<li><strong>subject</strong> The subject id derived from the subject record entry in the X_train.txt or  X_test.txt files</li>
+<li><strong>activity</strong> Represent the activity, one of &ldquo;LAYING&rdquo;, &ldquo;SITTING&rdquo;, &ldquo;STANDING&rdquo;, &ldquo; WALKING&rdquo;, &ldquo;WALKING_DOWNSTAIRS&rdquo;,&ldquo;WALKING_UPSTAIRS&rdquo;</li>
+<li><strong>measurement</strong> Repensenting the same measurents variables as given in &ldquo;CombinedData.csv&rdquo;</li>
+<li><strong>average</strong> The average for each subject, activity, measurement.</li>
+</ul>
+
+<h2>Data Transformation</h2>
+
+<ul>
+<li>Data was melted and then Dcast to get means across each  subject, activity, measurement.</li>
+<li>Data was again melted to put it back into a tidy fomr </li>
+</ul>
+
+</body>
+
+</html>
+
